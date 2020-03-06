@@ -1,0 +1,69 @@
+
+	CLASSSTATE
+
+	Am inceput aceasta functie prin a declara containerul, mai exact ClassState
+printr-o structura ce contine numele clasei, de tip String, variabilele dintr-o
+clasa, de tip lista de lista de string-uri, functiile dintr-o clasa, de acelasi
+tip ca si variabiele, si parintele, de acelasi tip ca si clasa, ClassState.
+	Functia initEmptyClass nu primeste nimic si intoarce un container gol,
+initializand cu "null" parametrii. Functia insertIntoClass primeste o clasa
+ca parametru, tipul parametrului si valoarea acestuia si intoarce clasa
+cu parametrul in ea. Functia getValues primeste ca parametru o clasa si tipul
+cautat si intoarce toate variabilele ssau functiile clasei.
+	Pe langa functiile ce erau deja declarate, am mai facut o functie 
+ajutatoare pentru urmatorul punct. Functia getName returneaza numele unei clase
+sub forma de String.
+
+	PARSER
+
+	Am declarat baza de cunostinte acumulata, Program, ca fiind o structura
+formata dintr-o lista de ClassState-uri, adica clasele formate si clasa
+implicita Global si Instruction ca fiind o lista de String-uri.
+	Functia initEmptyProgram nu primeste nimic, dar returneaza un container 
+gol si cu clasa Global in el. Functia getVars returneaza numele de variabile
+din program, apeland functia getValues care primeste ca parametrii clasa
+Global, pentru ca in aceasta clasa sunt salvate toate variabilele, si tipul 
+pe care trebuie sa il intoarca. Functia getClasses primeste ca parametru un
+program si intoarce toate clasele din acesta sub forma de lista de String-uri.
+Se aplica map pe fiecare clasa, extragandu-se numele, iar apoi se face sortarea
+pe lista de clase la care s-a concatenat si clasa Global.Functia getParentClass
+primeste numele unei clase si programul si intoarce numele parintelui acelei 
+clase.
+	Functia parse ia un text de tip String si il intoarce sub forma de lista de
+String-uri. Functia words pe text elimina toate spatiile si taburile si 
+transforma cuvintele in stringuri, ca in exemplul:"aa bb cc \t\n dd" -> ["aa",
+"bb","cc","dd"], dupa care lines face o lista.
+	Functia interpret primeste instructiunea prelucata anterior si programul,
+ulterior modificandu-l cu noile informatii primite. In cazul in care 
+instructiunea nu exista sau e goala, se va intoarce acelasi program. Daca 
+primul cuvant din instructiunea este "class", atunci se va adauga o clasa si se
+va apela functia pentru inserarea claselor. Daca primul cuvant este "newvar",
+atunci se va apela functia de inserare a variabilelor, cuvantul "infer" a fost
+lasat pentru urmatorul punct. Daca primeste altceva inseamna ca va trebui sa 
+se insereze o functie.
+	Functia de inserare a claselor verifica daca parametrul primit exista deja
+sau trebuie adaugat. Numele clasei este al doilea parametru din instructiune, 
+iar in caz ca exista, parintele clasei va fi ultimul parametru dat din
+instructiune. Variabila extendsList returneaza o lista care va contine clasa
+parinte. Daca lungimea instructiunii este 2 inseamna ca clasa este declarata
+fara parinte, asa ca implicit parintele ei va fi Global. Apoi, chiar daca 
+lungimea instructiunii este de 4, trebuie verificata conditia ca parintele sa
+existe. Daca parintele exista se introduc informatiile in program, daca nu 
+clasa se va introduce in program cu parintele Global.
+	La inserarea variabilelor se verifica daca tipul exista in program. Daca nu
+exista se ignora, altfel variabila se va salva in clasa Global. Variabila
+foundClass returneaza daca s-a gasit clasa sau nu. Functia unwords o sa uneasca
+cuvintele cu spatii intre ele, adica face din mai multe String-uri unul singur.
+["aa","bb","cc","dd"] -> "aa bb cc dd". Variabila instr intoarce linia cu 
+caracterul special inlocuit cu spatiu pentru a putea fi folosita in aflarea 
+existentei clasei.
+	Functia insertFunc parseaza functia si o adauga in clasa. Functia 
+ajutatoare checkFunc verifica daca functia este valida, adica daca tipul de
+return si tipul argumentelor exista in program. Daca functiile folosesc para-
+metrii sau rezultat intors de tipuri necunoscute, atunci acea linie va fi 
+ignorata, iar functia va intoarce programul initial. Line va intoarce 
+instructiunea sub forma de string cu spatii intre caractere, iar parsed este o
+variabila auxiliara folosita pentru a aplica din nou functia words, inainte de 
+asta, caracterele speciale fiind inlocuite cu spatiu. Variabila className va
+contine tipul returnat, iar in restList se vor salva numele functiei si 
+parametrii acesteia. Variabila funcList are numele functiei si tipurile.
